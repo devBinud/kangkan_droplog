@@ -16,8 +16,8 @@ function App() {
       const currentTime = Date.now();
       const timeElapsed = currentTime - parseInt(loginTime, 10);
 
-      if (timeElapsed < 30 * 1000) {
-        setIsAuthenticated(true); // session still valid within 30 seconds
+      if (timeElapsed < 15 * 60 * 1000) {
+        setIsAuthenticated(true); // session still valid within 15 minutes
       } else {
         // session expired
         localStorage.removeItem('authenticated');
@@ -27,6 +27,7 @@ function App() {
 
     setLoading(false); // done checking
   }, []);
+
 
   const handleLogin = () => {
     localStorage.setItem('authenticated', 'true');
