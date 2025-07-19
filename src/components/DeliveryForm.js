@@ -27,13 +27,15 @@ const DeliveryEntry = () => {
     e.preventDefault();
 
     try {
-      const docRef = await addDoc(collection(db, 'delivery_entries'), {
+      const docRef = await addDoc(collection(db, 'delivery_log'), {
         ...formData,
         createdAt: Timestamp.now()
       });
-      console.log('✅ Data submitted with ID:', docRef.id);
+
+      alert('Delivery log entry saved successfully!');
     } catch (error) {
       console.error('❌ Error adding document:', error);
+      alert('❌ Failed to submit the delivery entry. Please try again.');
     }
 
     setFormData({
@@ -47,8 +49,9 @@ const DeliveryEntry = () => {
     });
   };
 
+
   return (
-<div className="min-h-screen bg-[radial-gradient(circle,_#000_90%,_#b91c1c_100%)] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[radial-gradient(circle,_#000_90%,_#b91c1c_100%)] flex items-center justify-center p-4">
 
       <div className="w-full max-w-2xl bg-white rounded-md p-6 md:p-10 md:shadow-md border border-gray-200 md:border-none">
         <div className="flex justify-center mb-1">
@@ -137,13 +140,13 @@ const DeliveryEntry = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Tracking Link</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1">Tracking Code or Link</label>
             <input
-              type="url"
+              type="text"
               name="link"
               value={formData.link}
               onChange={handleChange}
-              placeholder="Paste link here"
+              placeholder="Enter tracking code or link (e.g. DP0023 or https://...)"
               required
               className="w-full p-3 rounded-md bg-white border border-gray-300 text-sm focus:outline-none focus:border-[#991b1b] focus:ring-1 focus:ring-[#991b1b]"
             />
