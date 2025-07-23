@@ -1,10 +1,9 @@
 // src/components/DeliveryEntry.js
 import React, { useState } from 'react';
 import { db } from '../firebase/config';
-// import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import logo from '../assets/logo.png';
 import { Link } from 'react-router-dom';
-import { collection, addDoc, Timestamp, query, where, getDocs } from 'firebase/firestore'; // Add this
 
 const DeliveryEntry = () => {
   const [formData, setFormData] = useState({
@@ -24,46 +23,30 @@ const DeliveryEntry = () => {
     });
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // 1. Check if tracking ID already exists
-      const q = query(
-        collection(db, 'delivery_log'),
-        where('link', '==', formData.link.trim())
-      );
-      const querySnapshot = await getDocs(q);
-
-      if (!querySnapshot.empty) {
-        alert('Tracking ID already exists. Please enter a unique one.');
-        return;
-      }
-
-      // 2. Add new entry
-      await addDoc(collection(db, 'delivery_log'), {
+      const docRef = await addDoc(collection(db, 'delivery_log'), {
         ...formData,
         createdAt: Timestamp.now()
       });
 
-      alert('Entry saved successfully.');
-
-      // 3. Reset form
-      setFormData({
-        date: '',
-        name: '',
-        product: '',
-        price: '',
-        phone: '',
-        address: '',
-        link: ''
-      });
-
+      alert('Delivery log entry saved successfully!');
     } catch (error) {
       console.error('❌ Error adding document:', error);
       alert('❌ Failed to submit the delivery entry. Please try again.');
     }
+
+    setFormData({
+      date: '',
+      name: '',
+      product: '',
+      price: '',
+      phone: '',
+      address: '',
+      link: ''
+    });
   };
 
 
